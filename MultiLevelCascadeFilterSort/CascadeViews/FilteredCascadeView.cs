@@ -5,10 +5,10 @@
         public Func<ItemValue, bool>? FilterFunc { get; private set; } = null;
 
 
-        private bool FilterCheck(int id) => (FilterFunc == null || FilterFunc(Base[id]));
+        protected internal bool FilterCheck(int id) => (FilterFunc == null || FilterFunc(Base[id]));
 
 
-        internal new bool Add(int id)
+        protected internal new bool Add(int id)
         {
             if (FilterCheck(id))
             {
@@ -18,7 +18,7 @@
             return false;
         }
 
-        internal new bool AddRange(IEnumerable<int> ids)
+        protected internal new bool AddRange(IEnumerable<int> ids)
         {
             bool result = false;
             if (FilterFunc == null)
@@ -39,7 +39,7 @@
             return result;
         }
 
-        internal override int InsertItemInOrder(int id)
+        protected internal override int InsertItemInOrder(int id)
         {
             if (FilterCheck(id))
             {

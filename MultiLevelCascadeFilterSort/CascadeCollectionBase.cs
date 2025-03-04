@@ -16,16 +16,16 @@ namespace MultiLevelCascadeFilterSort
         private readonly MikouTools.Collections.Specialized.UniqueNumberGenerator _numberGenerator = new();
 
         // Dictionary to manage items using unique integer IDs.
-        internal DualKeyDictionary<int, ItemValue> BaseList;
+        protected internal DualKeyDictionary<int, ItemValue> BaseList;
 
         // Collection of child views (CascadeView) associated with each filter key.
-        internal readonly Dictionary<CascadeKey, CascadeViewBase<CascadeKey, ItemValue>> Children;
+        protected internal readonly Dictionary<CascadeKey, CascadeViewBase<CascadeKey, ItemValue>> Children;
 
         /// <summary>
         /// Factory method to create the base item dictionary.
         /// Override this in derived classes to provide specific initialization.
         /// </summary>
-        internal virtual DualKeyDictionary<int, ItemValue> CreateBaseItemDictionary()
+        protected internal virtual DualKeyDictionary<int, ItemValue> CreateBaseItemDictionary()
         {
             return [];
         }
@@ -34,7 +34,7 @@ namespace MultiLevelCascadeFilterSort
         /// Factory method to create the collection of child views.
         /// Override this in derived classes to provide specific initialization.
         /// </summary>
-        internal virtual Dictionary<CascadeKey, CascadeViewBase<CascadeKey, ItemValue>> CreateChildViews()
+        protected internal virtual Dictionary<CascadeKey, CascadeViewBase<CascadeKey, ItemValue>> CreateChildViews()
         {
             return [];
         }

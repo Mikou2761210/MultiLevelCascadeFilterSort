@@ -18,21 +18,21 @@ namespace MultiLevelCascadeFilterSort.CascadeViews
         #region internal
 
         // Reference to the underlying base collection.
-        internal CascadeCollectionBase<CascadeKey, ItemValue> Base { get; set; }
+        protected internal CascadeCollectionBase<CascadeKey, ItemValue> Base { get; set; }
         // Reference to the parent view (if any).
-        internal CascadeViewBase<CascadeKey, ItemValue>? Parent { get; set; }
+        protected internal CascadeViewBase<CascadeKey, ItemValue>? Parent { get; set; }
 
         // List of item IDs managed internally.
-        internal DirtySortList<int> IdList { get; set; }
+        protected internal DirtySortList<int> IdList { get; set; }
 
         // Collection of child views.
-        internal Dictionary<CascadeKey, CascadeViewBase<CascadeKey, ItemValue>> Children { get; set; }
+        protected internal Dictionary<CascadeKey, CascadeViewBase<CascadeKey, ItemValue>> Children { get; set; }
 
         /// <summary>
         /// Factory method to create the internal list of item IDs.
         /// Override this in derived classes to provide specific initialization.
         /// </summary>
-        internal virtual DirtySortList<int> CreateIdList()
+        protected internal virtual DirtySortList<int> CreateIdList()
         {
             return [];
         }
@@ -41,7 +41,7 @@ namespace MultiLevelCascadeFilterSort.CascadeViews
         /// Factory method to create the collection of child views.
         /// Override this in derived classes to provide specific initialization.
         /// </summary>
-        internal virtual Dictionary<CascadeKey, CascadeViewBase<CascadeKey, ItemValue>> CreateChildViews()
+        protected internal virtual Dictionary<CascadeKey, CascadeViewBase<CascadeKey, ItemValue>> CreateChildViews()
         {
             return [];
         }
@@ -102,7 +102,7 @@ namespace MultiLevelCascadeFilterSort.CascadeViews
         /// Adds the specified unique ID to the internal list and propagates the addition to all child views.
         /// </summary>
         /// <param name="id">The unique ID to add.</param>
-        internal virtual void Add(int id)
+        protected internal virtual void Add(int id)
         {
             IdList.Add(id);
             foreach (var child in Children.Values)
@@ -115,7 +115,7 @@ namespace MultiLevelCascadeFilterSort.CascadeViews
         /// Adds a range of unique IDs to the internal list and updates all child views.
         /// </summary>
         /// <param name="ids">The collection of unique IDs to add.</param>
-        internal virtual void AddRange(IEnumerable<int> ids)
+        protected internal virtual void AddRange(IEnumerable<int> ids)
         {
             IdList.AddRange(ids);
             foreach (var child in Children.Values)
@@ -129,7 +129,7 @@ namespace MultiLevelCascadeFilterSort.CascadeViews
         /// </summary>
         /// <param name="id">The unique ID to insert.</param>
         /// <returns>The index at which the ID was inserted.</returns>
-        internal virtual int InsertItemInOrder(int id)
+        protected internal virtual int InsertItemInOrder(int id)
         {
             int index = IdList.IsDirty ? IdList.Count : IdList.BinarySearch(id, IdList.LastComparer);
             if (index < 0)
@@ -149,7 +149,7 @@ namespace MultiLevelCascadeFilterSort.CascadeViews
         /// </summary>
         /// <param name="id">The unique ID to remove.</param>
         /// <returns>True if removal is successful; otherwise, false.</returns>
-        internal virtual bool Remove(int id)
+        protected internal virtual bool Remove(int id)
         {
             if (IdList.Remove(id))
             {
@@ -166,7 +166,7 @@ namespace MultiLevelCascadeFilterSort.CascadeViews
         /// Removes the item at the specified index from the internal list and propagates the removal to all child views.
         /// </summary>
         /// <param name="index">The index of the item to remove.</param>
-        internal virtual void RemoveAt(int index)
+        protected internal virtual void RemoveAt(int index)
         {
             if ((uint)index >= (uint)IdList.Count)
                 throw new ArgumentOutOfRangeException(nameof(index));

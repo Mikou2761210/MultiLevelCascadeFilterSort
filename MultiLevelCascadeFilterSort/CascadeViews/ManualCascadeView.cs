@@ -11,7 +11,7 @@ namespace MultiLevelCascadeFilterSort.CascadeViews
         /// It is disabled
         /// </summary>
         /// <param name="id"></param>
-        internal static new void Add(int _)
+        protected internal static new void Add(int _)
         {
             return;
         }
@@ -19,7 +19,7 @@ namespace MultiLevelCascadeFilterSort.CascadeViews
         /// It is disabled
         /// </summary>
         /// <param name="id"></param>
-        internal static new void AddRange(IEnumerable<int> _)
+        protected internal static new void AddRange(IEnumerable<int> _)
         {
             return;
         }
@@ -27,7 +27,7 @@ namespace MultiLevelCascadeFilterSort.CascadeViews
         /// It is disabled
         /// </summary>
         /// <param name="id"></param>
-        internal static new int InsertItemInOrder(int _)
+        protected internal static new int InsertItemInOrder(int _)
         {
             return -1;
         }

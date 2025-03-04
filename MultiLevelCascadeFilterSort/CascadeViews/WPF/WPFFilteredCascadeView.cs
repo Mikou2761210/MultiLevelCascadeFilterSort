@@ -13,7 +13,7 @@ namespace MultiLevelCascadeFilterSort.CascadeViews.WPF
     {
         private bool _suppressNotification = false;
         public event NotifyCollectionChangedEventHandler? CollectionChanged;
-        protected void OnCollectionChanged(NotifyCollectionChangedEventArgs e)
+        protected internal void OnCollectionChanged(NotifyCollectionChangedEventArgs e)
         {
             if (_suppressNotification)
                 return;
@@ -51,7 +51,7 @@ namespace MultiLevelCascadeFilterSort.CascadeViews.WPF
 
 
 
-        internal new bool Add(int id)
+        protected internal new bool Add(int id)
         {
             if (base.Add(id))
             {
@@ -60,7 +60,7 @@ namespace MultiLevelCascadeFilterSort.CascadeViews.WPF
             }
             return false;
         }
-        internal new bool AddRange(IEnumerable<int> ids)
+        protected internal new bool AddRange(IEnumerable<int> ids)
         {
             if (base.AddRange(ids))
             {
@@ -70,7 +70,7 @@ namespace MultiLevelCascadeFilterSort.CascadeViews.WPF
             return false;
         }
 
-        internal new int InsertItemInOrder(int id)
+        protected internal new int InsertItemInOrder(int id)
         {
             int index = base.InsertItemInOrder(id);
             if (index != -1)
@@ -81,7 +81,7 @@ namespace MultiLevelCascadeFilterSort.CascadeViews.WPF
             return index;
         }
 
-        internal new bool Remove(int id)
+        protected internal new bool Remove(int id)
         {
             int index = IdList.IndexOf(id);
             if (index != -1)
@@ -94,7 +94,7 @@ namespace MultiLevelCascadeFilterSort.CascadeViews.WPF
 
         }
 
-        internal new void RemoveAt(int index)
+        protected internal new void RemoveAt(int index)
         {
             base.RemoveAt(index);
             OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, Base[IdList[index]], index));
