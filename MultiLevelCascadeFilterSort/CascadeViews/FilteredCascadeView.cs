@@ -1,7 +1,11 @@
 ﻿namespace MultiLevelCascadeFilterSort.CascadeViews
 {
-    public class FilteredCascadeView<CascadeKey, ItemValue>(CascadeCollectionBase<CascadeKey, ItemValue> @base, CascadeViewBase<CascadeKey, ItemValue>? parent = null)  : CascadeViewBase<CascadeKey, ItemValue>(@base,parent) where CascadeKey : notnull where ItemValue : notnull
+    public class FilteredCascadeView<CascadeKey, ItemValue> : CascadeViewBase<CascadeKey, ItemValue> where CascadeKey : notnull where ItemValue : notnull
     {
+        public FilteredCascadeView(CascadeCollectionBase<CascadeKey, ItemValue> @base, CascadeViewBase<CascadeKey, ItemValue>? parent = null, Func<ItemValue, bool>? filterFunc = null) : base(@base, parent)
+        {
+            ChangeFilter(filterFunc);
+        }
         public Func<ItemValue, bool>? FilterFunc { get; private set; } = null;
 
 
