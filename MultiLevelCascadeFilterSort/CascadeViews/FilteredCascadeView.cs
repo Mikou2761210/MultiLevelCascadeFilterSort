@@ -6,13 +6,20 @@
         {
             ChangeFilter(filterFunc);
         }
+        protected override void Initialize(CascadeCollectionBase<CascadeKey, ItemValue> @base, CascadeViewBase<CascadeKey, ItemValue>? parent)
+        {
+            Base = @base;
+            Parent = parent;
+            AddRange(parent?.IdList ?? @base.BaseList.Keys.ToList());
+        }
+
         public Func<ItemValue, bool>? FilterFunc { get; private set; } = null;
 
 
         protected internal bool FilterCheck(int id) => (FilterFunc == null || FilterFunc(Base[id]));
 
 
-        protected internal new bool Add(int id)
+        protected internal new virtual bool Add(int id)
         {
             if (FilterCheck(id))
             {
@@ -22,7 +29,7 @@
             return false;
         }
 
-        protected internal new bool AddRange(IEnumerable<int> ids)
+        protected internal new virtual bool AddRange(IEnumerable<int> ids)
         {
             bool result = false;
             if (FilterFunc == null)

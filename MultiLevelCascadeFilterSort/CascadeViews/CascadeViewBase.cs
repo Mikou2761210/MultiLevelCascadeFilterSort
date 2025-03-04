@@ -69,11 +69,18 @@ namespace MultiLevelCascadeFilterSort.CascadeViews
         /// <param name="parent">The parent view (if any).</param>
         public CascadeViewBase(CascadeCollectionBase<CascadeKey, ItemValue> @base, CascadeViewBase<CascadeKey, ItemValue>? parent)
         {
-            Base = @base;
-            Parent = parent;
-
             IdList = CreateIdList();
             Children = CreateChildViews();
+            Initialize(@base, parent);
+            if (Base is null) throw new NullReferenceException(nameof(Base));
+            if (Parent is null) throw new NullReferenceException(nameof(Parent));
+        }
+
+        protected virtual void Initialize(CascadeCollectionBase<CascadeKey, ItemValue> @base, CascadeViewBase<CascadeKey, ItemValue>? parent)
+        {
+            Base = @base;
+            Parent = parent;
+            IdList.AddRange(parent?.IdList ?? @base.BaseList.Keys.ToList());
         }
 
         /// <summary>

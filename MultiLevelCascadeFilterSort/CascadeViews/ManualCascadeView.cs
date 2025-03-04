@@ -33,6 +33,11 @@ namespace MultiLevelCascadeFilterSort.CascadeViews
         }
         #endregion Disable
 
+        protected override void Initialize(CascadeCollectionBase<CascadeKey, ItemValue> @base, CascadeViewBase<CascadeKey, ItemValue>? parent)
+        {
+            Base = @base;
+            Parent = parent;
+        }
 
         public void ManualAdd(int id)
         {

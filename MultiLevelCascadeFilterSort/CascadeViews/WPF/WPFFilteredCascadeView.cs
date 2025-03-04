@@ -28,7 +28,12 @@ namespace MultiLevelCascadeFilterSort.CascadeViews.WPF
                 UIContext.Send(_ => CollectionChanged?.Invoke(this, e), null);
             }
         }
-
+        protected override void Initialize(CascadeCollectionBase<CascadeKey, ItemValue> @base, CascadeViewBase<CascadeKey, ItemValue>? parent)
+        {
+            Base = @base;
+            Parent = parent;
+            AddRange(parent?.IdList ?? @base.BaseList.Keys.ToList());
+        }
         /// <summary>
         /// Assign a UI thread context to update the UI after an asynchronous operation
         /// </summary>
@@ -60,7 +65,7 @@ namespace MultiLevelCascadeFilterSort.CascadeViews.WPF
             }
             return false;
         }
-        protected internal new bool AddRange(IEnumerable<int> ids)
+        protected internal override bool AddRange(IEnumerable<int> ids)
         {
             if (base.AddRange(ids))
             {
