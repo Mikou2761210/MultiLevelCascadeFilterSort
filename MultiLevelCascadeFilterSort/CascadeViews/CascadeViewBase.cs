@@ -131,7 +131,7 @@ namespace MultiLevelCascadeFilterSort.CascadeViews
         /// <returns>The index at which the ID was inserted.</returns>
         internal virtual int InsertItemInOrder(int id)
         {
-            int index = IdList.BinarySearch(id, IdList.LastComparer);
+            int index = IdList.IsDirty ? IdList.Count : IdList.BinarySearch(id, IdList.LastComparer);
             if (index < 0)
                 index = ~index;
             bool dirtySave = IdList.IsDirty;
@@ -182,6 +182,59 @@ namespace MultiLevelCascadeFilterSort.CascadeViews
         #endregion internal
 
         #region public
+
+        /// <summary>
+        /// Determines whether the specified unique ID exists in the internal ID list.
+        /// </summary>
+        /// <param name="id">The unique ID to check.</param>
+        /// <returns>True if the ID exists; otherwise, false.</returns>
+        public virtual bool Contains(int id)
+        {
+            return IdList.Contains(id);
+        }
+
+        /// <summary>
+        /// Attempts to retrieve the unique ID associated with the specified item.
+        /// </summary>
+        /// <param name="item">The item to look up.</param>
+        /// <param name="id">
+        /// When this method returns, contains the unique ID associated with the item if found;
+        /// otherwise, the default value of int.
+        /// </param>
+        /// <returns>True if the item is found and an ID is assigned; otherwise, false.</returns>
+        public virtual bool GetID(ItemValue item, [MaybeNullWhen(false)] out int id)
+        {
+            return Base.BaseList.TryGetKey(item, out id);
+        }
+
+        /// <summary>
+        /// Retrieves the unique ID at the specified index within the internal ID list.
+        /// If the index is out of range, returns -1.
+        /// </summary>
+        /// <param name="index">The index of the ID to retrieve.</param>
+        /// <returns>
+        /// The unique ID at the given index if it exists; otherwise, -1 if the index is invalid.
+        /// </returns>
+        public virtual int GetID(int index)
+        {
+            if ((uint)index >= (uint)IdList.Count)
+                return -1;
+            return IdList[index];
+        }
+
+        /// <summary>
+        /// Attempts to retrieve the item associated with the specified unique ID.
+        /// </summary>
+        /// <param name="id">The unique ID of the item to retrieve.</param>
+        /// <param name="value">
+        /// When this method returns, contains the item associated with the unique ID if found;
+        /// otherwise, the default value for the type.
+        /// </param>
+        /// <returns>True if the item is found; otherwise, false.</returns>
+        public virtual bool GetValue(int id, [MaybeNullWhen(false)] out ItemValue? value)
+        {
+            return Base.BaseList.TryGetValue(id, out value);
+        }
 
         /// <summary>
         /// Retrieves the index of the specified item within the view.

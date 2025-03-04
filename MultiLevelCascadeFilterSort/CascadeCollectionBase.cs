@@ -76,7 +76,7 @@ namespace MultiLevelCascadeFilterSort
         /// </summary>
         /// <param name="item">The item for which the ID is requested.</param>
         /// <returns>The unique ID, or -1 if not found.</returns>
-        public int GetId(ItemValue item)
+        public int GetID(ItemValue item)
         {
             if (BaseList.TryGetKey(item, out int id))
             {
@@ -193,10 +193,10 @@ namespace MultiLevelCascadeFilterSort
             return false;
         }
 
-        #region Filter Methods
+        #region Cascade Methods
 
         /// <summary>
-        /// Retrieves the child view associated with the specified filter key.
+        /// Retrieves the child view associated with the specified cascade key.
         /// </summary>
         /// <param name="cascadeKey">The key identifying the child view.</param>
         /// <returns>The child view instance if found; otherwise, null.</returns>
@@ -219,7 +219,7 @@ namespace MultiLevelCascadeFilterSort
         }
 
         /// <summary>
-        /// Removes the child view associated with the specified filter key.
+        /// Removes the child view associated with the specified cascade key.
         /// </summary>
         /// <param name="cascadeKey">The key identifying the child view to remove.</param>
         /// <returns>True if removal is successful; otherwise, false.</returns>
@@ -228,6 +228,6 @@ namespace MultiLevelCascadeFilterSort
             return Children.Remove(cascadeKey);
         }
 
-        #endregion Filter Methods
+        #endregion Cascade Methods
     }
 }
