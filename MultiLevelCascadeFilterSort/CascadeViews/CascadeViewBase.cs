@@ -59,7 +59,7 @@ namespace MultiLevelCascadeFilterSort.CascadeViews
         /// <summary>
         /// Gets a read-only list of item IDs managed by the view.
         /// </summary>
-        public IReadOnlyList<int> GetIdList() => IdList;
+        public IReadOnlyList<int> GetIDs() => IdList;
 
         /// <summary>
         /// Initializes a new instance of CascadeViewBase.
