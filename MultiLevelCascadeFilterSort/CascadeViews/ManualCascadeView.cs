@@ -39,31 +39,41 @@ namespace MultiLevelCascadeFilterSort.CascadeViews
             Parent = parent;
         }
 
-        public void ManualAdd(int id)
+        /// <summary>
+        /// Adds an item by its unique ID if it does not already exist.
+        /// </summary>
+        public virtual void AddItemById(int id)
         {
-            if((Parent == null || !Parent.Contains(id)) && !base.GetIDs().Contains(id))
+            if ((Parent == null || !Parent.Contains(id)) && !base.GetIDs().Contains(id))
             {
                 base.Add(id);
             }
         }
-        public void ManualAddSlim(int parentindex)
+
+        /// <summary>
+        /// Adds an item using the parent's index to retrieve its unique ID.
+        /// </summary>
+        public virtual void AddItemFromParentIndex(int parentIndex)
         {
             if (Parent == null) throw new NullReferenceException(nameof(Parent));
-            int id = Parent.GetID(parentindex);
+            int id = Parent.GetID(parentIndex);
             if (id != -1 && !base.GetIDs().Contains(id))
             {
                 base.Add(id);
             }
         }
 
-        public void ManualAddRange(IEnumerable<int> ids)
+        /// <summary>
+        /// Adds multiple items by their unique IDs.
+        /// </summary>
+        public virtual void AddItemsByIds(IEnumerable<int> ids)
         {
             HashSet<int>? parentIds = Parent is null ? null : [.. Parent.GetIDs()];
             HashSet<int> existIds = [.. base.GetIDs()];
             List<int> addItems = new(ids.Count());
             foreach (int id in ids)
             {
-                if ((parentIds is null || parentIds.Contains(id)) && !existIds.Contains(id)) 
+                if ((parentIds is null || parentIds.Contains(id)) && !existIds.Contains(id))
                 {
                     existIds.Add(id);
                     addItems.Add(id);
@@ -72,13 +82,15 @@ namespace MultiLevelCascadeFilterSort.CascadeViews
             base.AddRange(addItems);
         }
 
-        public void ManualAddRangeSlim(IEnumerable<int> indexs)
+        /// <summary>
+        /// Adds multiple items using their parent indices to retrieve unique IDs.
+        /// </summary>
+        public virtual void AddItemsFromParentIndices(IEnumerable<int> indices)
         {
             if (Parent == null) throw new NullReferenceException(nameof(Parent));
-
             HashSet<int> existIds = [.. base.GetIDs()];
-            List<int> addItems = new(indexs.Count());
-            foreach (int index in indexs)
+            List<int> addItems = new(indices.Count());
+            foreach (int index in indices)
             {
                 int id = Parent.GetID(index);
                 if (id != -1 && existIds.Add(id))
@@ -89,19 +101,25 @@ namespace MultiLevelCascadeFilterSort.CascadeViews
             base.AddRange(addItems);
         }
 
-        public int ManualInsertItemInOrder(int id)
+        /// <summary>
+        /// Inserts an item by its unique ID in order, if it does not already exist.
+        /// </summary>
+        public virtual int InsertItemByIdInOrder(int id)
         {
-            if ((parent == null || !parent.Contains(id)) && !base.GetIDs().Contains(id))
+            if ((Parent == null || !Parent.Contains(id)) && !base.GetIDs().Contains(id))
             {
                 return base.InsertItemInOrder(id);
             }
             return -1;
         }
-        public int ManualInsertItemInOrderSlim(int parentindex)
+
+        /// <summary>
+        /// Inserts an item using the parent's index to retrieve its unique ID in order.
+        /// </summary>
+        public virtual int InsertItemFromParentIndexInOrder(int parentIndex)
         {
             if (Parent == null) throw new NullReferenceException(nameof(Parent));
-
-            int id = Parent.GetID(parentindex);
+            int id = Parent.GetID(parentIndex);
             if (id != -1 && !base.GetIDs().Contains(id))
             {
                 return base.InsertItemInOrder(id);
@@ -109,7 +127,10 @@ namespace MultiLevelCascadeFilterSort.CascadeViews
             return -1;
         }
 
-        public void ManualInsertItemInOrderRange(IEnumerable<int> ids)
+        /// <summary>
+        /// Inserts multiple items by their unique IDs in order.
+        /// </summary>
+        public virtual void InsertItemsByIdsInOrder(IEnumerable<int> ids)
         {
             HashSet<int>? parentIds = Parent is null ? null : [.. Parent.GetIDs()];
             HashSet<int> existIds = [.. base.GetIDs()];
@@ -122,13 +143,15 @@ namespace MultiLevelCascadeFilterSort.CascadeViews
                 }
             }
         }
-        public void ManualInsertItemInOrderRangeSlim(IEnumerable<int> indexs)
+
+        /// <summary>
+        /// Inserts multiple items using their parent indices to retrieve unique IDs in order.
+        /// </summary>
+        public virtual void InsertItemsFromParentIndicesInOrder(IEnumerable<int> indices)
         {
             if (Parent == null) throw new NullReferenceException(nameof(Parent));
-
             HashSet<int> existIds = [.. base.GetIDs()];
-
-            foreach (int index in indexs)
+            foreach (int index in indices)
             {
                 int id = Parent.GetID(index);
                 if (id != -1 && existIds.Add(id))
