@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace MultiLevelCascadeFilterSort.CascadeViews
 {
-    public class ManualCascadeView<CascadeKey, ItemValue>(CascadeCollectionBase<CascadeKey, ItemValue> @base, CascadeViewBase<CascadeKey, ItemValue>? parent = null) : CascadeViewBase<CascadeKey, ItemValue>(@base, parent) where CascadeKey : notnull where ItemValue : notnull
+    public class ManualCascadeView<CascadeKey, ItemValue>(CascadeCollectionBase<CascadeKey, ItemValue> @base, CascadeViewBase<CascadeKey, ItemValue>? parent) : CascadeViewBase<CascadeKey, ItemValue>(@base, parent) where CascadeKey : notnull where ItemValue : notnull
     {
         #region Disable
 
@@ -41,7 +41,7 @@ namespace MultiLevelCascadeFilterSort.CascadeViews
 
         public void ManualAdd(int id)
         {
-            if((Parent == null || !Parent.Contains(id)) && !base.GetIdList.Contains(id))
+            if((Parent == null || !Parent.Contains(id)) && !base.GetIdList().Contains(id))
             {
                 base.Add(id);
             }
@@ -50,7 +50,7 @@ namespace MultiLevelCascadeFilterSort.CascadeViews
         {
             if (Parent == null) throw new NullReferenceException(nameof(Parent));
             int id = Parent.GetID(parentindex);
-            if (id != -1 && !base.GetIdList.Contains(id))
+            if (id != -1 && !base.GetIdList().Contains(id))
             {
                 base.Add(id);
             }
@@ -58,8 +58,8 @@ namespace MultiLevelCascadeFilterSort.CascadeViews
 
         public void ManualAddRange(IEnumerable<int> ids)
         {
-            HashSet<int>? parentIds = Parent is null ? null : [.. Parent.GetIdList];
-            HashSet<int> existIds = [.. base.GetIdList];
+            HashSet<int>? parentIds = Parent is null ? null : [.. Parent.GetIdList()];
+            HashSet<int> existIds = [.. base.GetIdList()];
             List<int> addItems = new(ids.Count());
             foreach (int id in ids)
             {
@@ -76,7 +76,7 @@ namespace MultiLevelCascadeFilterSort.CascadeViews
         {
             if (Parent == null) throw new NullReferenceException(nameof(Parent));
 
-            HashSet<int> existIds = [.. base.GetIdList];
+            HashSet<int> existIds = [.. base.GetIdList()];
             List<int> addItems = new(indexs.Count());
             foreach (int index in indexs)
             {
@@ -91,7 +91,7 @@ namespace MultiLevelCascadeFilterSort.CascadeViews
 
         public int ManualInsertItemInOrder(int id)
         {
-            if ((parent == null || !parent.Contains(id)) && !base.GetIdList.Contains(id))
+            if ((parent == null || !parent.Contains(id)) && !base.GetIdList().Contains(id))
             {
                 return base.InsertItemInOrder(id);
             }
@@ -102,7 +102,7 @@ namespace MultiLevelCascadeFilterSort.CascadeViews
             if (Parent == null) throw new NullReferenceException(nameof(Parent));
 
             int id = Parent.GetID(parentindex);
-            if (id != -1 && !base.GetIdList.Contains(id))
+            if (id != -1 && !base.GetIdList().Contains(id))
             {
                 return base.InsertItemInOrder(id);
             }
@@ -111,8 +111,8 @@ namespace MultiLevelCascadeFilterSort.CascadeViews
 
         public void ManualInsertItemInOrderRange(IEnumerable<int> ids)
         {
-            HashSet<int>? parentIds = Parent is null ? null : [.. Parent.GetIdList];
-            HashSet<int> existIds = [.. base.GetIdList];
+            HashSet<int>? parentIds = Parent is null ? null : [.. Parent.GetIdList()];
+            HashSet<int> existIds = [.. base.GetIdList()];
             foreach (int id in ids)
             {
                 if ((parentIds is null || parentIds.Contains(id)) && !existIds.Contains(id))
@@ -126,7 +126,7 @@ namespace MultiLevelCascadeFilterSort.CascadeViews
         {
             if (Parent == null) throw new NullReferenceException(nameof(Parent));
 
-            HashSet<int> existIds = [.. base.GetIdList];
+            HashSet<int> existIds = [.. base.GetIdList()];
 
             foreach (int index in indexs)
             {
