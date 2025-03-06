@@ -59,7 +59,7 @@
             return -1;
         }
 
-        private bool _currentFilterAll = false;
+        protected bool _currentFilterAll = false;
         public virtual bool ChangeFilter(Func<ItemValue, bool>? filterFunc)
         {
             if ((filterFunc == null && !_currentFilterAll) || FilterFunc != filterFunc)

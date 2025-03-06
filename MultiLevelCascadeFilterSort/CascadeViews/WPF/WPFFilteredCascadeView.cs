@@ -11,9 +11,9 @@ namespace MultiLevelCascadeFilterSort.CascadeViews.WPF
 
     public class WPFFilteredCascadeView<CascadeKey, ItemValue>(CascadeCollectionBase<CascadeKey, ItemValue> @base, CascadeViewBase<CascadeKey, ItemValue>? parent = null, Func<ItemValue, bool>? filterFunc = null) : FilteredCascadeView<CascadeKey, ItemValue>(@base, parent, filterFunc) where CascadeKey : notnull where ItemValue : notnull
     {
-        private bool _suppressNotification = false;
+        protected bool _suppressNotification = false;
         public event NotifyCollectionChangedEventHandler? CollectionChanged;
-        protected internal void OnCollectionChanged(NotifyCollectionChangedEventArgs e)
+        protected virtual internal void OnCollectionChanged(NotifyCollectionChangedEventArgs e)
         {
             if (_suppressNotification)
                 return;
@@ -43,12 +43,12 @@ namespace MultiLevelCascadeFilterSort.CascadeViews.WPF
         /// <summary>
         /// Suppress notifications during multiple updates
         /// </summary>
-        public void BeginBulkUpdate() => _suppressNotification = true;
+        public virtual void BeginBulkUpdate() => _suppressNotification = true;
 
         /// <summary>
         /// Cancels notification suppression and issues a Reset notification
         /// </summary>
-        public void EndBulkUpdate()
+        public virtual void EndBulkUpdate()
         {
             _suppressNotification = false;
             OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
@@ -56,7 +56,7 @@ namespace MultiLevelCascadeFilterSort.CascadeViews.WPF
 
 
 
-        protected internal new bool Add(int id)
+        protected virtual internal new bool Add(int id)
         {
             if (base.Add(id))
             {
@@ -75,7 +75,7 @@ namespace MultiLevelCascadeFilterSort.CascadeViews.WPF
             return false;
         }
 
-        protected internal new int InsertItemInOrder(int id)
+        protected virtual internal new int InsertItemInOrder(int id)
         {
             int index = base.InsertItemInOrder(id);
             if (index != -1)
@@ -86,7 +86,7 @@ namespace MultiLevelCascadeFilterSort.CascadeViews.WPF
             return index;
         }
 
-        protected internal new bool Remove(int id)
+        protected virtual internal new bool Remove(int id)
         {
             int index = IdList.IndexOf(id);
             if (index != -1)
@@ -99,14 +99,14 @@ namespace MultiLevelCascadeFilterSort.CascadeViews.WPF
 
         }
 
-        protected internal new void RemoveAt(int index)
+        protected virtual internal new void RemoveAt(int index)
         {
             base.RemoveAt(index);
             OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, Base[IdList[index]], index));
         }
 
 
-        public new int Move(int fromIndex, int toIndex)
+        public virtual new int Move(int fromIndex, int toIndex)
         {
             int result = base.Move(fromIndex, toIndex);
             if (result != -1)
@@ -137,7 +137,7 @@ namespace MultiLevelCascadeFilterSort.CascadeViews.WPF
             return false;
         }
 
-        public new bool ChangeFilter(Func<ItemValue, bool>? filterFunc)
+        public virtual new bool ChangeFilter(Func<ItemValue, bool>? filterFunc)
         {
             if (base.ChangeFilter(filterFunc))
             {
