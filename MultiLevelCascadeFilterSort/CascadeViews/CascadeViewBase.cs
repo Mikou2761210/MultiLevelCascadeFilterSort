@@ -289,6 +289,19 @@ namespace MultiLevelCascadeFilterSort.CascadeViews
         #region Sorting Methods
 
         /// <summary>
+        /// Creates a CascadeComparer instance by converting the specified IComparer for ItemValue
+        /// into an IComparer for item IDs, using the current base collection.
+        /// </summary>
+        /// <param name="comparer">The comparer for ItemValue instances.</param>
+        /// <returns>
+        /// A CascadeComparer that compares item IDs by comparing the corresponding ItemValue instances.
+        /// </returns>
+        private CascadeComparer<CascadeKey, ItemValue> CreateCascadeComparer(IComparer<ItemValue>? comparer)
+        {
+            return new CascadeComparer<CascadeKey, ItemValue>(Base, comparer);
+        }
+
+        /// <summary>
         /// Sorts the entire view using the default comparer.
         /// </summary>
         /// <returns>True if sorting is successful; otherwise, false.</returns>
@@ -313,7 +326,7 @@ namespace MultiLevelCascadeFilterSort.CascadeViews
         /// <returns>True if sorting is successful; otherwise, false.</returns>
         public virtual bool Sort(int index, int count, IComparer<ItemValue>? comparer)
         {
-            return IdList.Sort(index, count, comparer != null ? new CascadeComparer<CascadeKey, ItemValue>(Base, comparer) : null);
+            return IdList.Sort(index, count, CreateCascadeComparer(comparer));
         }
 
         /// <summary>
@@ -345,6 +358,64 @@ namespace MultiLevelCascadeFilterSort.CascadeViews
             }
             return result;
         }
+
+
+
+        /// <summary>
+        /// Performs a binary search for the specified item within the view using the last used comparer.
+        /// </summary>
+        /// <param name="item">The item to search for.</param>
+        /// <returns>
+        /// The index of the item if found; otherwise, a negative number indicating the bitwise complement
+        /// of the index at which the item should be inserted.
+        /// </returns>
+        public virtual int BinarySearchByItem(ItemValue item)
+        {
+            // Retrieve the unique ID associated with the item and perform a binary search by ID.
+            return BinarySearchById(Base.GetID(item));
+        }
+
+        /// <summary>
+        /// Performs a binary search for the specified unique ID within the view using the last used comparer.
+        /// </summary>
+        /// <param name="id">The unique ID to search for.</param>
+        /// <returns>
+        /// The index of the item if found; otherwise, a negative number indicating the bitwise complement
+        /// of the index at which the item should be inserted.
+        /// </returns>
+        public virtual int BinarySearchById(int id)
+        {
+            return IdList.BinarySearch(id, IdList.LastComparer);
+        }
+
+        /// <summary>
+        /// Performs a binary search for the specified item within the view using the provided comparer.
+        /// </summary>
+        /// <param name="item">The item to search for.</param>
+        /// <param name="comparer">The comparer for ItemValue instances.</param>
+        /// <returns>
+        /// The index of the item if found; otherwise, a negative number indicating the bitwise complement
+        /// of the index at which the item should be inserted.
+        /// </returns>
+        public virtual int BinarySearchByItem(ItemValue item, IComparer<ItemValue> comparer)
+        {
+            return BinarySearchById(Base.GetID(item), comparer);
+        }
+
+        /// <summary>
+        /// Performs a binary search for the specified unique ID within the view using the provided comparer.
+        /// </summary>
+        /// <param name="id">The unique ID to search for.</param>
+        /// <param name="comparer">The comparer for ItemValue instances.</param>
+        /// <returns>
+        /// The index of the item if found; otherwise, a negative number indicating the bitwise complement
+        /// of the index at which the item should be inserted.
+        /// </returns>
+        public virtual int BinarySearchById(int id, IComparer<ItemValue> comparer)
+        {
+            return IdList.BinarySearch(id, CreateCascadeComparer(comparer));
+        }
+
 
         #endregion Sorting Methods
 
