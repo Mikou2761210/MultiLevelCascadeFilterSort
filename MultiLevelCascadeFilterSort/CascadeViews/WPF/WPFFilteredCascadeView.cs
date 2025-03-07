@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace MultiLevelCascadeFilterSort.CascadeViews.WPF
 {
 
-    public class WPFFilteredCascadeView<CascadeKey, ItemValue>(CascadeCollectionBase<CascadeKey, ItemValue> @base, CascadeViewBase<CascadeKey, ItemValue>? parent = null, Func<ItemValue, bool>? filterFunc = null) : FilteredCascadeView<CascadeKey, ItemValue>(@base, parent, filterFunc) where CascadeKey : notnull where ItemValue : notnull
+    public class WPFFilteredCascadeView<CascadeKey, ItemValue>(CascadeCollectionBase<CascadeKey, ItemValue> @base, CascadeViewBase<CascadeKey, ItemValue>? parent, Func<ItemValue, bool>? filterFunc = null) : FilteredCascadeView<CascadeKey, ItemValue>(@base, parent, filterFunc) where CascadeKey : notnull where ItemValue : notnull
     {
         protected bool _suppressNotification = false;
         public event NotifyCollectionChangedEventHandler? CollectionChanged;
@@ -54,7 +54,7 @@ namespace MultiLevelCascadeFilterSort.CascadeViews.WPF
             OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
         }
 
-
+        //public override Func<ItemValue, bool>? FilterFunc { get => base.FilterFunc; protected private set => base.FilterFunc = value; }
 
         protected virtual internal new bool Add(int id)
         {

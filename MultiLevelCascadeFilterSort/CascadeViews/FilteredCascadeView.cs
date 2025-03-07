@@ -2,7 +2,7 @@
 {
     public class FilteredCascadeView<CascadeKey, ItemValue> : CascadeViewBase<CascadeKey, ItemValue> where CascadeKey : notnull where ItemValue : notnull
     {
-        public FilteredCascadeView(CascadeCollectionBase<CascadeKey, ItemValue> @base, CascadeViewBase<CascadeKey, ItemValue>? parent = null, Func<ItemValue, bool>? filterFunc = null) : base(@base, parent)
+        public FilteredCascadeView(CascadeCollectionBase<CascadeKey, ItemValue> @base, CascadeViewBase<CascadeKey, ItemValue>? parent, Func<ItemValue, bool>? filterFunc = null) : base(@base, parent)
         {
             ChangeFilter(filterFunc);
         }
@@ -13,7 +13,7 @@
             AddRange(parent?.IdList ?? @base.BaseList.Keys.ToList());
         }
 
-        public Func<ItemValue, bool>? FilterFunc { get; private set; } = null;
+        public virtual Func<ItemValue, bool>? FilterFunc { get; protected set; } = null;
 
 
         protected internal bool FilterCheck(int id) => (FilterFunc == null || FilterFunc(Base[id]));
