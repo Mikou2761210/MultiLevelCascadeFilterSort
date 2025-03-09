@@ -1,4 +1,5 @@
 ﻿using MikouTools.Collections.Optimized;
+using MikouTools.Utils;
 using MultiLevelCascadeFilterSort.CascadeViews;
 
 namespace MultiLevelCascadeFilterSort
@@ -13,7 +14,7 @@ namespace MultiLevelCascadeFilterSort
         where CascadeKey : notnull
         where ItemValue : notnull
     {
-        private readonly MikouTools.Collections.Specialized.UniqueNumberGenerator _numberGenerator = new();
+        private readonly UniqueNumberGenerator _numberGenerator = new();
 
         // Dictionary to manage items using unique integer IDs.
         protected internal DualKeyDictionary<int, ItemValue> BaseList;
