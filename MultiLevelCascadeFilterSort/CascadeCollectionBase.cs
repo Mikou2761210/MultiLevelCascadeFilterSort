@@ -1,4 +1,4 @@
-﻿using MikouTools.Collections.Optimized;
+﻿using MikouTools.Collections.DictionaryEx.DualKey;
 using MikouTools.Utils;
 using MultiLevelCascadeFilterSort.CascadeViews;
 
